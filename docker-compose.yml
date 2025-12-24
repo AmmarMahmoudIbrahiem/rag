@@ -1,0 +1,48 @@
+services:
+  rag-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskrag-api
+    expose:
+      - "8000"
+    env_file:
+      - src/.env
+    environment:
+      - EMBEDDING_DEVICE=cpu
+    volumes:
+      - ./src/vector_index.faiss:/app/src/vector_index.faiss
+      - ./src/metadata.pkl:/app/src/metadata.pkl
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/welcome" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - rag-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: taskrag-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rag-network
+    depends_on:
+      rag-system:
+        condition: service_healthy
+
+networks:
+  rag-network:
+    driver: bridge
