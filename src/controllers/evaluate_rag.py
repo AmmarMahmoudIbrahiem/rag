@@ -2,8 +2,8 @@ import time
 import json
 import logging
 from datasets import load_dataset
-from controllers.VectordbControllers import VectorStoreManager
-from controllers.LLMController import LLMController
+from src.controllers.VectordbControllers import VectorStoreManager
+from src.controllers.LLMController import LLMController
 from sentence_transformers import SentenceTransformer, util
 
 # Setup logging

@@ -6,8 +6,8 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from langchain_core.documents import Document
-from controllers import TriviaQADataProcessor
-from helpers.config import get_settings
+from src.controllers.DataController import TriviaQADataProcessor
+from src.helpers.config import get_settings
 
 # Setup logging
 logger = logging.getLogger(__name__)

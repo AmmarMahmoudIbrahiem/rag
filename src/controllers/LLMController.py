@@ -2,7 +2,7 @@ import cohere
 import logging
 import time
 from typing import Dict, List, Any, Optional
-from helpers.config import get_settings
+from src.helpers.config import get_settings
 import backoff
 
 logger = logging.getLogger(__name__)

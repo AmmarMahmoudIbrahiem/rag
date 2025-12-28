@@ -1,11 +1,12 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/app
 
 # System dependencies (FAISS + build)
 RUN apt-get update && apt-get install -y \
@@ -14,10 +15,10 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first
+# Copy requirements first (GOOD PRACTICE)
 COPY src/requirements.txt .
 
-# Install all dependencies with PyTorch CPU in one go to avoid conflicts
+# Install dependencies
 RUN pip install \
     --default-timeout=100 \
     --retries 10 \
@@ -25,10 +26,10 @@ RUN pip install \
     --extra-index-url https://download.pytorch.org/whl/cpu \
     -r requirements.txt
 
-# Copy app
+# Copy application code
 COPY src/ ./src/
 
-# Data dir for FAISS index
+# Data dir for FAISS
 RUN mkdir -p /app/data
 
 EXPOSE 8000

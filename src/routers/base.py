@@ -1,12 +1,12 @@
 import logging
 from fastapi import APIRouter
-from helpers.config import get_settings
+from src.helpers.config import get_settings
 from fastapi import status, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from controllers.DataController import TriviaQADataProcessor
-from controllers.VectordbControllers import VectorStoreManager
-from controllers.LLMController import LLMController
+from src.controllers.DataController import TriviaQADataProcessor
+from src.controllers.VectordbControllers import VectorStoreManager
+from src.controllers.LLMController import LLMController
 
 
 base_router = APIRouter()

@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
-from helpers.config import get_settings
+from src.helpers.config import get_settings
 from typing import List, Dict, Any
 import logging
 
